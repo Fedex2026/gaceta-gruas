@@ -31,6 +31,11 @@
           </div>
 
           <div class="field">
+            <label>Hora</label>
+            <input type="time" id="hora" />
+          </div>
+
+          <div class="field">
             <label>Tipo de servicio</label>
             <select id="tipoServicio">
               <option value="siniestro">Siniestro</option>
@@ -39,7 +44,7 @@
           </div>
 
           <div class="field">
-            <label>Tipo de grúa</label>
+            <label>Tipo de grúa principal</label>
             <select id="tipoGrua">
               <option value="A">Tipo A</option>
               <option value="B">Tipo B</option>
@@ -70,25 +75,48 @@
 
           <div class="field">
             <label>Kilómetros</label>
-            <input type="number" id="kilometros" placeholder="0" min="0" />
+            <input type="number" id="kilometros" placeholder="0" min="0" step="0.01" />
+          </div>
+
+          <div class="field">
+            <label>Horas de espera</label>
+            <input type="number" id="horasEspera" placeholder="0" min="0" step="0.01" />
+          </div>
+
+          <div class="field">
+            <label>Horas maniobra grúa principal</label>
+            <input type="number" id="horasManiobra" placeholder="0" min="0" step="0.01" />
           </div>
 
           <div class="field">
             <label>Días de pensión</label>
-            <input type="number" id="diasPension" placeholder="0" min="0" />
+            <input type="number" id="diasPension" placeholder="0" min="0" step="1" />
           </div>
 
           <div class="field">
-            <label>Maniobras</label>
-            <input type="number" id="maniobras" placeholder="0" min="0" />
-          </div>
-
-          <div class="field">
-            <label>Abanderamiento</label>
-            <select id="abanderamiento">
+            <label>Abanderamiento grúa</label>
+            <select id="abanderamientoGrua">
               <option value="no">No</option>
               <option value="si">Sí</option>
             </select>
+          </div>
+
+          <div class="field">
+            <label>Horas abanderamiento grúa</label>
+            <input type="number" id="horasAbanderamientoGrua" placeholder="0" min="0" step="0.01" />
+          </div>
+
+          <div class="field">
+            <label>Abanderamiento manual</label>
+            <select id="abanderamientoManual">
+              <option value="no">No</option>
+              <option value="si">Sí</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Horas abanderamiento manual</label>
+            <input type="number" id="horasAbanderamientoManual" placeholder="0" min="0" step="0.01" />
           </div>
 
           <div class="field">
@@ -98,6 +126,28 @@
               <option value="si">Sí</option>
             </select>
           </div>
+        </div>
+
+        <div id="seccionCorralon" class="extra-box hidden">
+          <h3>Datos de corralón</h3>
+          <div class="grid">
+            <div class="field">
+              <label>Placas corralón</label>
+              <input type="text" id="placasCorralon" placeholder="Placas del vehículo" />
+            </div>
+            <div class="field">
+              <label>Número de inventario</label>
+              <input type="text" id="numeroInventario" placeholder="Ej. INV-001" />
+            </div>
+          </div>
+        </div>
+
+        <div class="extra-box">
+          <div class="section-title-row">
+            <h3>Grúas adicionales</h3>
+            <button type="button" id="btnAgregarGrua" class="mini-btn">+ Agregar grúa</button>
+          </div>
+          <div id="gruasExtrasContainer"></div>
         </div>
 
         <div class="actions">
@@ -118,20 +168,32 @@
             <strong id="rTraslado">$0.00</strong>
           </div>
           <div class="result-item">
-            <span>Maniobras</span>
+            <span>Maniobra grúa principal</span>
             <strong id="rManiobras">$0.00</strong>
           </div>
           <div class="result-item">
-            <span>Abanderamiento</span>
-            <strong id="rAbanderamiento">$0.00</strong>
+            <span>Grúas adicionales</span>
+            <strong id="rGruasExtras">$0.00</strong>
           </div>
           <div class="result-item">
-            <span>Corralón</span>
-            <strong id="rCorralon">$0.00</strong>
+            <span>Espera</span>
+            <strong id="rEspera">$0.00</strong>
+          </div>
+          <div class="result-item">
+            <span>Abanderamiento grúa</span>
+            <strong id="rAbanderamientoGrua">$0.00</strong>
+          </div>
+          <div class="result-item">
+            <span>Abanderamiento manual</span>
+            <strong id="rAbanderamientoManual">$0.00</strong>
           </div>
           <div class="result-item">
             <span>Pensión</span>
             <strong id="rPension">$0.00</strong>
+          </div>
+          <div class="result-item">
+            <span>Corralón</span>
+            <strong id="rCorralon">$0.00</strong>
           </div>
           <div class="result-item total">
             <span>Total</span>
