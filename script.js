@@ -12,6 +12,10 @@ const PENSION_POR_DIA = 0;
 const CORRALON_COSTO = 0;
 
 const btnAgregarGrua = document.getElementById("btnAgregarGrua");
+const btnCalcular = document.getElementById("btnCalcular");
+const btnWord = document.getElementById("btnWord");
+const btnExcel = document.getElementById("btnExcel");
+
 const gruasExtrasContainer = document.getElementById("gruasExtrasContainer");
 const corralonSelect = document.getElementById("corralon");
 const seccionCorralon = document.getElementById("seccionCorralon");
@@ -35,6 +39,8 @@ function parseDateOnly(value) {
 }
 
 function calcularDiasCorralon() {
+  if (!fechaIngresoCorralon || !fechaSalidaCorralon || !diasPensionInput) return;
+
   const ingreso = parseDateOnly(fechaIngresoCorralon.value);
   const salida = parseDateOnly(fechaSalidaCorralon.value);
 
@@ -49,6 +55,7 @@ function calcularDiasCorralon() {
 }
 
 function toggleCorralon() {
+  if (!corralonSelect || !seccionCorralon) return;
   const mostrar = corralonSelect.value === "si";
   seccionCorralon.classList.toggle("hidden", !mostrar);
 }
@@ -124,7 +131,8 @@ function crearGruaExtra() {
     </div>
   `;
 
-  wrapper.querySelector(".btn-eliminar").addEventListener("click", () => {
+  const btnEliminar = wrapper.querySelector(".btn-eliminar");
+  btnEliminar.addEventListener("click", () => {
     wrapper.remove();
     calcularTodo();
   });
@@ -139,29 +147,29 @@ function crearGruaExtra() {
 
 function obtenerValoresPrincipales() {
   return {
-    numeroServicio: document.getElementById("numeroServicio").value || "",
-    fecha: document.getElementById("fecha").value || "",
-    hora: document.getElementById("hora").value || "",
-    tipoServicio: document.getElementById("tipoServicio").value || "",
-    tipo: document.getElementById("tipoGrua").value || "A",
-    placas: document.getElementById("placas").value || "",
-    marca: document.getElementById("marca").value || "",
-    origen: document.getElementById("origen").value || "",
-    destino: document.getElementById("destino").value || "",
-    km: Number(document.getElementById("kilometros").value) || 0,
-    horasEspera: Number(document.getElementById("horasEspera").value) || 0,
-    horasManiobra: Number(document.getElementById("horasManiobra").value) || 0,
-    abanderamientoGrua: document.getElementById("abanderamientoGrua").value,
-    horasAbanderamientoGrua: Number(document.getElementById("horasAbanderamientoGrua").value) || 0,
-    abanderamientoManual: document.getElementById("abanderamientoManual").value,
-    horasAbanderamientoManual: Number(document.getElementById("horasAbanderamientoManual").value) || 0,
-    corralon: document.getElementById("corralon").value,
-    placasCorralon: document.getElementById("placasCorralon").value || "",
-    numeroActa: document.getElementById("numeroActa").value || "",
-    numeroInventario: document.getElementById("numeroInventario").value || "",
-    fechaIngresoCorralon: document.getElementById("fechaIngresoCorralon").value || "",
-    fechaSalidaCorralon: document.getElementById("fechaSalidaCorralon").value || "",
-    diasPension: Number(document.getElementById("diasPension").value) || 0
+    numeroServicio: document.getElementById("numeroServicio")?.value || "",
+    fecha: document.getElementById("fecha")?.value || "",
+    hora: document.getElementById("hora")?.value || "",
+    tipoServicio: document.getElementById("tipoServicio")?.value || "",
+    tipo: document.getElementById("tipoGrua")?.value || "A",
+    placas: document.getElementById("placas")?.value || "",
+    marca: document.getElementById("marca")?.value || "",
+    origen: document.getElementById("origen")?.value || "",
+    destino: document.getElementById("destino")?.value || "",
+    km: Number(document.getElementById("kilometros")?.value) || 0,
+    horasEspera: Number(document.getElementById("horasEspera")?.value) || 0,
+    horasManiobra: Number(document.getElementById("horasManiobra")?.value) || 0,
+    abanderamientoGrua: document.getElementById("abanderamientoGrua")?.value || "no",
+    horasAbanderamientoGrua: Number(document.getElementById("horasAbanderamientoGrua")?.value) || 0,
+    abanderamientoManual: document.getElementById("abanderamientoManual")?.value || "no",
+    horasAbanderamientoManual: Number(document.getElementById("horasAbanderamientoManual")?.value) || 0,
+    corralon: document.getElementById("corralon")?.value || "no",
+    placasCorralon: document.getElementById("placasCorralon")?.value || "",
+    numeroActa: document.getElementById("numeroActa")?.value || "",
+    numeroInventario: document.getElementById("numeroInventario")?.value || "",
+    fechaIngresoCorralon: document.getElementById("fechaIngresoCorralon")?.value || "",
+    fechaSalidaCorralon: document.getElementById("fechaSalidaCorralon")?.value || "",
+    diasPension: Number(document.getElementById("diasPension")?.value) || 0
   };
 }
 
@@ -170,15 +178,15 @@ function calcularGruasExtras() {
   const detalleGruas = [];
 
   document.querySelectorAll(".grua-extra").forEach((item, index) => {
-    const tipo = item.querySelector(".extra-tipo").value;
-    const placas = item.querySelector(".extra-placas-grua").value || "";
-    const km = Number(item.querySelector(".extra-km").value) || 0;
-    const espera = Number(item.querySelector(".extra-espera").value) || 0;
-    const maniobraHoras = Number(item.querySelector(".extra-maniobra").value) || 0;
-    const abanderamientoGrua = item.querySelector(".extra-abanderamiento-grua").value;
-    const horasAbanderamientoGrua = Number(item.querySelector(".extra-horas-abanderamiento-grua").value) || 0;
-    const abanderamientoManual = item.querySelector(".extra-abanderamiento-manual").value;
-    const horasAbanderamientoManual = Number(item.querySelector(".extra-horas-abanderamiento-manual").value) || 0;
+    const tipo = item.querySelector(".extra-tipo")?.value || "A";
+    const placas = item.querySelector(".extra-placas-grua")?.value || "";
+    const km = Number(item.querySelector(".extra-km")?.value) || 0;
+    const espera = Number(item.querySelector(".extra-espera")?.value) || 0;
+    const maniobraHoras = Number(item.querySelector(".extra-maniobra")?.value) || 0;
+    const abanderamientoGrua = item.querySelector(".extra-abanderamiento-grua")?.value || "no";
+    const horasAbanderamientoGrua = Number(item.querySelector(".extra-horas-abanderamiento-grua")?.value) || 0;
+    const abanderamientoManual = item.querySelector(".extra-abanderamiento-manual")?.value || "no";
+    const horasAbanderamientoManual = Number(item.querySelector(".extra-horas-abanderamiento-manual")?.value) || 0;
 
     const subtotal =
       tarifas[tipo].banderazo +
@@ -191,7 +199,7 @@ function calcularGruasExtras() {
     totalGruasExtras += subtotal;
 
     detalleGruas.push({
-      nombre: `Grúa adicional ${index + 1}`,
+      nombre: Grúa adicional ${index + 1},
       tipo,
       placas,
       km,
@@ -373,7 +381,7 @@ function exportarWord() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `Reporte_Gaceta_${document.getElementById("numeroServicio").value || "servicio"}.doc`;
+  a.download = Reporte_Gaceta_${document.getElementById("numeroServicio")?.value || "servicio"}.doc;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -385,42 +393,42 @@ function exportarExcel() {
 
   let csv = "REPORTE GACETA GRUAS METROPOLITANAS\n";
   csv += "Campo,Valor\n";
-  csv += `Numero de servicio,${d.numeroServicio}\n`;
-  csv += `Fecha,${d.fecha}\n`;
-  csv += `Hora,${d.hora}\n`;
-  csv += `Tipo de servicio,${d.tipoServicio}\n`;
-  csv += `Tipo de grua principal,${d.tipo}\n`;
-  csv += `Placas del auto,${d.placas}\n`;
-  csv += `Marca,${d.marca}\n`;
-  csv += `Origen,${d.origen}\n`;
-  csv += `Destino,${d.destino}\n`;
-  csv += `Kilometros,${d.km}\n`;
-  csv += `Horas espera,${d.horasEspera}\n`;
-  csv += `Horas maniobra principal,${d.horasManiobra}\n`;
-  csv += `Corralon,${d.corralon}\n`;
-  csv += `Placas corralon,${d.placasCorralon}\n`;
-  csv += `Numero acta,${d.numeroActa}\n`;
-  csv += `Numero inventario,${d.numeroInventario}\n`;
-  csv += `Fecha ingreso corralon,${d.fechaIngresoCorralon}\n`;
-  csv += `Fecha salida corralon,${d.fechaSalidaCorralon}\n`;
-  csv += `Dias pension,${d.diasPension}\n`;
+  csv += Numero de servicio,${d.numeroServicio}\n;
+  csv += Fecha,${d.fecha}\n;
+  csv += Hora,${d.hora}\n;
+  csv += Tipo de servicio,${d.tipoServicio}\n;
+  csv += Tipo de grua principal,${d.tipo}\n;
+  csv += Placas del auto,${d.placas}\n;
+  csv += Marca,${d.marca}\n;
+  csv += Origen,${d.origen}\n;
+  csv += Destino,${d.destino}\n;
+  csv += Kilometros,${d.km}\n;
+  csv += Horas espera,${d.horasEspera}\n;
+  csv += Horas maniobra principal,${d.horasManiobra}\n;
+  csv += Corralon,${d.corralon}\n;
+  csv += Placas corralon,${d.placasCorralon}\n;
+  csv += Numero acta,${d.numeroActa}\n;
+  csv += Numero inventario,${d.numeroInventario}\n;
+  csv += Fecha ingreso corralon,${d.fechaIngresoCorralon}\n;
+  csv += Fecha salida corralon,${d.fechaSalidaCorralon}\n;
+  csv += Dias pension,${d.diasPension}\n;
   csv += "\nConcepto,Monto\n";
-  csv += `Banderazo,${d.banderazo}\n`;
-  csv += `Traslado,${d.traslado}\n`;
-  csv += `Maniobra grua principal,${d.maniobra}\n`;
-  csv += `Gruas adicionales,${d.totalGruasExtras}\n`;
-  csv += `Espera,${d.espera}\n`;
-  csv += `Abanderamiento grua,${d.costoAbanderamientoGrua}\n`;
-  csv += `Abanderamiento manual,${d.costoAbanderamientoManual}\n`;
-  csv += `Pension,${d.pension}\n`;
-  csv += `Corralon,${d.costoCorralon}\n`;
-  csv += `Total,${d.total}\n`;
+  csv += Banderazo,${d.banderazo}\n;
+  csv += Traslado,${d.traslado}\n;
+  csv += Maniobra grua principal,${d.maniobra}\n;
+  csv += Gruas adicionales,${d.totalGruasExtras}\n;
+  csv += Espera,${d.espera}\n;
+  csv += Abanderamiento grua,${d.costoAbanderamientoGrua}\n;
+  csv += Abanderamiento manual,${d.costoAbanderamientoManual}\n;
+  csv += Pension,${d.pension}\n;
+  csv += Corralon,${d.costoCorralon}\n;
+  csv += Total,${d.total}\n;
 
   if (d.detalleGruas.length) {
     csv += "\nGRUAS ADICIONALES\n";
     csv += "Nombre,Tipo,Placas,KM,Horas espera,Horas maniobra,Aband grua,Horas aband grua,Aband manual,Horas aband manual,Subtotal\n";
     d.detalleGruas.forEach((g) => {
-      csv += `${g.nombre},${g.tipo},${g.placas},${g.km},${g.espera},${g.maniobraHoras},${g.abanderamientoGrua},${g.horasAbanderamientoGrua},${g.abanderamientoManual},${g.horasAbanderamientoManual},${g.subtotal}\n`;
+      csv += ${g.nombre},${g.tipo},${g.placas},${g.km},${g.espera},${g.maniobraHoras},${g.abanderamientoGrua},${g.horasAbanderamientoGrua},${g.abanderamientoManual},${g.horasAbanderamientoManual},${g.subtotal}\n;
     });
   }
 
@@ -428,32 +436,49 @@ function exportarExcel() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `Reporte_Gaceta_${document.getElementById("numeroServicio").value || "servicio"}.csv`;
+  a.download = Reporte_Gaceta_${document.getElementById("numeroServicio")?.value || "servicio"}.csv;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 
-corralonSelect.addEventListener("change", () => {
-  toggleCorralon();
-  calcularTodo();
-});
+if (corralonSelect) {
+  corralonSelect.addEventListener("change", () => {
+    toggleCorralon();
+    calcularTodo();
+  });
+}
 
-fechaIngresoCorralon.addEventListener("change", () => {
-  calcularDiasCorralon();
-  calcularTodo();
-});
+if (fechaIngresoCorralon) {
+  fechaIngresoCorralon.addEventListener("change", () => {
+    calcularDiasCorralon();
+    calcularTodo();
+  });
+}
 
-fechaSalidaCorralon.addEventListener("change", () => {
-  calcularDiasCorralon();
-  calcularTodo();
-});
+if (fechaSalidaCorralon) {
+  fechaSalidaCorralon.addEventListener("change", () => {
+    calcularDiasCorralon();
+    calcularTodo();
+  });
+}
 
-btnAgregarGrua.addEventListener("click", crearGruaExtra);
-document.getElementById("btnCalcular").addEventListener("click", calcularTodo);
-document.getElementById("btnWord").addEventListener("click", exportarWord);
-document.getElementById("btnExcel").addEventListener("click", exportarExcel);
+if (btnAgregarGrua) {
+  btnAgregarGrua.addEventListener("click", crearGruaExtra);
+}
+
+if (btnCalcular) {
+  btnCalcular.addEventListener("click", calcularTodo);
+}
+
+if (btnWord) {
+  btnWord.addEventListener("click", exportarWord);
+}
+
+if (btnExcel) {
+  btnExcel.addEventListener("click", exportarExcel);
+}
 
 document.querySelectorAll("input, select").forEach((el) => {
   el.addEventListener("input", calcularTodo);
