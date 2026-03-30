@@ -3,7 +3,7 @@ const tarifas = {
 A: {
 banderazo: 798.02,
 km: 28.41,
-maniobra: 1640.78
+maniobra: 1840.78
 },
 
 B: {
