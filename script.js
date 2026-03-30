@@ -199,7 +199,7 @@ function calcularGruasExtras() {
     totalGruasExtras += subtotal;
 
     detalleGruas.push({
-      nombre: Grúa adicional ${index + 1},
+      nombre: `Grúa adicional ${index + 1}`,
       tipo,
       placas,
       km,
@@ -292,7 +292,7 @@ function construirHtmlReporte() {
         <td>${money(g.subtotal)}</td>
       </tr>
     `).join("")
-    : <tr><td colspan="7">Sin grúas adicionales</td></tr>;
+    : `<tr><td colspan="7">Sin grúas adicionales</td></tr>`;
 
   return `
   <html>
@@ -381,7 +381,7 @@ function exportarWord() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = Reporte_Gaceta_${document.getElementById("numeroServicio")?.value || "servicio"}.doc;
+  a.download = `Reporte_Gaceta_${document.getElementById("numeroServicio")?.value || "servicio"}.doc`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -393,42 +393,42 @@ function exportarExcel() {
 
   let csv = "REPORTE GACETA GRUAS METROPOLITANAS\n";
   csv += "Campo,Valor\n";
-  csv += Numero de servicio,${d.numeroServicio}\n;
-  csv += Fecha,${d.fecha}\n;
-  csv += Hora,${d.hora}\n;
-  csv += Tipo de servicio,${d.tipoServicio}\n;
-  csv += Tipo de grua principal,${d.tipo}\n;
-  csv += Placas del auto,${d.placas}\n;
-  csv += Marca,${d.marca}\n;
-  csv += Origen,${d.origen}\n;
-  csv += Destino,${d.destino}\n;
-  csv += Kilometros,${d.km}\n;
-  csv += Horas espera,${d.horasEspera}\n;
-  csv += Horas maniobra principal,${d.horasManiobra}\n;
-  csv += Corralon,${d.corralon}\n;
-  csv += Placas corralon,${d.placasCorralon}\n;
-  csv += Numero acta,${d.numeroActa}\n;
-  csv += Numero inventario,${d.numeroInventario}\n;
-  csv += Fecha ingreso corralon,${d.fechaIngresoCorralon}\n;
-  csv += Fecha salida corralon,${d.fechaSalidaCorralon}\n;
-  csv += Dias pension,${d.diasPension}\n;
+  csv += `Numero de servicio,${d.numeroServicio}\n`;
+  csv += `Fecha,${d.fecha}\n`;
+  csv += `Hora,${d.hora}\n`;
+  csv += `Tipo de servicio,${d.tipoServicio}\n`;
+  csv += `Tipo de grua principal,${d.tipo}\n`;
+  csv += `Placas del auto,${d.placas}\n`;
+  csv += `Marca,${d.marca}\n`;
+  csv += `Origen,${d.origen}\n`;
+  csv += `Destino,${d.destino}\n`;
+  csv += `Kilometros,${d.km}\n`;
+  csv += `Horas espera,${d.horasEspera}\n`;
+  csv += `Horas maniobra principal,${d.horasManiobra}\n`;
+  csv += `Corralon,${d.corralon}\n`;
+  csv += `Placas corralon,${d.placasCorralon}\n`;
+  csv += `Numero acta,${d.numeroActa}\n`;
+  csv += `Numero inventario,${d.numeroInventario}\n`;
+  csv += `Fecha ingreso corralon,${d.fechaIngresoCorralon}\n`;
+  csv += `Fecha salida corralon,${d.fechaSalidaCorralon}\n`;
+  csv += `Dias pension,${d.diasPension}\n`;
   csv += "\nConcepto,Monto\n";
-  csv += Banderazo,${d.banderazo}\n;
-  csv += Traslado,${d.traslado}\n;
-  csv += Maniobra grua principal,${d.maniobra}\n;
-  csv += Gruas adicionales,${d.totalGruasExtras}\n;
-  csv += Espera,${d.espera}\n;
-  csv += Abanderamiento grua,${d.costoAbanderamientoGrua}\n;
-  csv += Abanderamiento manual,${d.costoAbanderamientoManual}\n;
-  csv += Pension,${d.pension}\n;
-  csv += Corralon,${d.costoCorralon}\n;
-  csv += Total,${d.total}\n;
+  csv += `Banderazo,${d.banderazo}\n`;
+  csv += `Traslado,${d.traslado}\n`;
+  csv += `Maniobra grua principal,${d.maniobra}\n`;
+  csv += `Gruas adicionales,${d.totalGruasExtras}\n`;
+  csv += `Espera,${d.espera}\n`;
+  csv += `Abanderamiento grua,${d.costoAbanderamientoGrua}\n`;
+  csv += `Abanderamiento manual,${d.costoAbanderamientoManual}\n`;
+  csv += `Pension,${d.pension}\n`;
+  csv += `Corralon,${d.costoCorralon}\n`;
+  csv += `Total,${d.total}\n`;
 
   if (d.detalleGruas.length) {
     csv += "\nGRUAS ADICIONALES\n";
     csv += "Nombre,Tipo,Placas,KM,Horas espera,Horas maniobra,Aband grua,Horas aband grua,Aband manual,Horas aband manual,Subtotal\n";
     d.detalleGruas.forEach((g) => {
-      csv += ${g.nombre},${g.tipo},${g.placas},${g.km},${g.espera},${g.maniobraHoras},${g.abanderamientoGrua},${g.horasAbanderamientoGrua},${g.abanderamientoManual},${g.horasAbanderamientoManual},${g.subtotal}\n;
+      csv += `${g.nombre},${g.tipo},${g.placas},${g.km},${g.espera},${g.maniobraHoras},${g.abanderamientoGrua},${g.horasAbanderamientoGrua},${g.abanderamientoManual},${g.horasAbanderamientoManual},${g.subtotal}\n`;
     });
   }
 
@@ -436,7 +436,7 @@ function exportarExcel() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = Reporte_Gaceta_${document.getElementById("numeroServicio")?.value || "servicio"}.csv;
+  a.download = `Reporte_Gaceta_${document.getElementById("numeroServicio")?.value || "servicio"}.csv`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
