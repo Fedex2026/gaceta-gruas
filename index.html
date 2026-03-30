@@ -10,8 +10,11 @@
   <div class="app">
     <header class="topbar">
       <div class="brand">
-        <h1>Costos por Gaceta</h1>
-        <p>Grúas Metropolitanas</p>
+        <img src="logo.png" alt="Logo Grúas Metropolitanas" class="logo" />
+        <div>
+          <h1>Gaceta Grúas Metropolitanas</h1>
+          <p>Sistema de Costos</p>
+        </div>
       </div>
     </header>
 
@@ -54,12 +57,12 @@
           </div>
 
           <div class="field">
-            <label>Placas</label>
+            <label>Placas del auto</label>
             <input type="text" id="placas" placeholder="ABC123A" />
           </div>
 
           <div class="field">
-            <label>Marca</label>
+            <label>Marca del auto</label>
             <input type="text" id="marca" placeholder="Marca del vehículo" />
           </div>
 
@@ -86,11 +89,6 @@
           <div class="field">
             <label>Horas maniobra grúa principal</label>
             <input type="number" id="horasManiobra" placeholder="0" min="0" step="0.01" />
-          </div>
-
-          <div class="field">
-            <label>Días de pensión</label>
-            <input type="number" id="diasPension" placeholder="0" min="0" step="1" />
           </div>
 
           <div class="field">
@@ -133,11 +131,27 @@
           <div class="grid">
             <div class="field">
               <label>Placas corralón</label>
-              <input type="text" id="placasCorralon" placeholder="Placas del vehículo" />
+              <input type="text" id="placasCorralon" placeholder="Placas del auto" />
             </div>
+
             <div class="field">
               <label>Número de inventario</label>
               <input type="text" id="numeroInventario" placeholder="Ej. INV-001" />
+            </div>
+
+            <div class="field">
+              <label>Fecha de ingreso</label>
+              <input type="date" id="fechaIngresoCorralon" />
+            </div>
+
+            <div class="field">
+              <label>Fecha actual / salida</label>
+              <input type="date" id="fechaSalidaCorralon" />
+            </div>
+
+            <div class="field">
+              <label>Días de pensión (automático)</label>
+              <input type="number" id="diasPension" placeholder="0" readonly />
             </div>
           </div>
         </div>
@@ -147,11 +161,14 @@
             <h3>Grúas adicionales</h3>
             <button type="button" id="btnAgregarGrua" class="mini-btn">+ Agregar grúa</button>
           </div>
+
           <div id="gruasExtrasContainer"></div>
         </div>
 
-        <div class="actions">
-          <button id="btnCalcular">Calcular</button>
+        <div class="actions action-grid">
+          <button id="btnCalcular" type="button">Calcular</button>
+          <button id="btnWord" type="button">Exportar Word</button>
+          <button id="btnExcel" type="button">Exportar Excel</button>
         </div>
       </section>
 
@@ -163,38 +180,47 @@
             <span>Banderazo</span>
             <strong id="rBanderazo">$0.00</strong>
           </div>
+
           <div class="result-item">
             <span>Traslado</span>
             <strong id="rTraslado">$0.00</strong>
           </div>
+
           <div class="result-item">
             <span>Maniobra grúa principal</span>
             <strong id="rManiobras">$0.00</strong>
           </div>
+
           <div class="result-item">
             <span>Grúas adicionales</span>
             <strong id="rGruasExtras">$0.00</strong>
           </div>
+
           <div class="result-item">
             <span>Espera</span>
             <strong id="rEspera">$0.00</strong>
           </div>
+
           <div class="result-item">
             <span>Abanderamiento grúa</span>
             <strong id="rAbanderamientoGrua">$0.00</strong>
           </div>
+
           <div class="result-item">
             <span>Abanderamiento manual</span>
             <strong id="rAbanderamientoManual">$0.00</strong>
           </div>
+
           <div class="result-item">
             <span>Pensión</span>
             <strong id="rPension">$0.00</strong>
           </div>
+
           <div class="result-item">
             <span>Corralón</span>
             <strong id="rCorralon">$0.00</strong>
           </div>
+
           <div class="result-item total">
             <span>Total</span>
             <strong id="rTotal">$0.00</strong>
