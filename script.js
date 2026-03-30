@@ -1,31 +1,15 @@
 const tarifas = {
-  A: {
-    banderazo: 798.02,
-    km: 28.41,
-    maniobraHora: 1840.78
-  },
-  B: {
-    banderazo: 916.85,
-    km: 31.12,
-    maniobraHora: 2017.65
-  },
-  C: {
-    banderazo: 1089.46,
-    km: 35.43,
-    maniobraHora: 2300.63
-  },
-  D: {
-    banderazo: 1337.08,
-    km: 48.83,
-    maniobraHora: 3172.21
-  }
+  A: { banderazo: 798.02, km: 28.41, maniobraHora: 1840.78 },
+  B: { banderazo: 916.85, km: 31.12, maniobraHora: 2017.65 },
+  C: { banderazo: 1089.46, km: 35.43, maniobraHora: 2300.63 },
+  D: { banderazo: 1337.08, km: 48.83, maniobraHora: 3172.21 }
 };
 
 const ESPERA_POR_HORA = 909.02;
 const ABANDERAMIENTO_GRUA_POR_HORA = 909.02;
 const ABANDERAMIENTO_MANUAL_POR_HORA = 76.39;
-const PENSION_POR_DIA = 0; // cuando tengas el costo real lo cambiamos
-const CORRALON_COSTO = 0;  // cuando tengas el costo real lo cambiamos
+const PENSION_POR_DIA = 0;
+const CORRALON_COSTO = 0;
 
 const btnAgregarGrua = document.getElementById("btnAgregarGrua");
 const gruasExtrasContainer = document.getElementById("gruasExtrasContainer");
@@ -61,8 +45,12 @@ function calcularDiasCorralon() {
 
   const diff = salida.getTime() - ingreso.getTime();
   const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-
   diasPensionInput.value = dias >= 0 ? dias : 0;
+}
+
+function toggleCorralon() {
+  const mostrar = corralonSelect.value === "si";
+  seccionCorralon.classList.toggle("hidden", !mostrar);
 }
 
 function crearGruaExtra() {
@@ -169,6 +157,7 @@ function obtenerValoresPrincipales() {
     horasAbanderamientoManual: Number(document.getElementById("horasAbanderamientoManual").value) || 0,
     corralon: document.getElementById("corralon").value,
     placasCorralon: document.getElementById("placasCorralon").value || "",
+    numeroActa: document.getElementById("numeroActa").value || "",
     numeroInventario: document.getElementById("numeroInventario").value || "",
     fechaIngresoCorralon: document.getElementById("fechaIngresoCorralon").value || "",
     fechaSalidaCorralon: document.getElementById("fechaSalidaCorralon").value || "",
@@ -202,7 +191,7 @@ function calcularGruasExtras() {
     totalGruasExtras += subtotal;
 
     detalleGruas.push({
-      nombre: Grúa adicional ${index + 1},
+      nombre: `Grúa adicional ${index + 1}`,
       tipo,
       placas,
       km,
@@ -336,8 +325,9 @@ function construirHtmlReporte() {
         <h3>Corralón</h3>
         <table>
           <tr><th>Aplica</th><td>${d.corralon}</td><th>Placas corralón</th><td>${d.placasCorralon}</td></tr>
-          <tr><th>No. inventario</th><td>${d.numeroInventario}</td><th>Fecha ingreso</th><td>${d.fechaIngresoCorralon}</td></tr>
-          <tr><th>Fecha salida</th><td>${d.fechaSalidaCorralon}</td><th>Días pensión</th><td>${d.diasPension}</td></tr>
+          <tr><th>No. acta</th><td>${d.numeroActa}</td><th>No. inventario</th><td>${d.numeroInventario}</td></tr>
+          <tr><th>Fecha ingreso</th><td>${d.fechaIngresoCorralon}</td><th>Fecha salida</th><td>${d.fechaSalidaCorralon}</td></tr>
+          <tr><th>Días pensión</th><td>${d.diasPension}</td><th></th><td></td></tr>
         </table>
       </div>
 
@@ -383,7 +373,7 @@ function exportarWord() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = Reporte_Gaceta_${document.getElementById("numeroServicio").value || "servicio"}.doc;
+  a.download = `Reporte_Gaceta_${document.getElementById("numeroServicio").value || "servicio"}.doc`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -409,12 +399,12 @@ function exportarExcel() {
   csv += Horas maniobra principal,${d.horasManiobra}\n;
   csv += Corralon,${d.corralon}\n;
   csv += Placas corralon,${d.placasCorralon}\n;
+  csv += Numero acta,${d.numeroActa}\n;
   csv += Numero inventario,${d.numeroInventario}\n;
   csv += Fecha ingreso corralon,${d.fechaIngresoCorralon}\n;
   csv += Fecha salida corralon,${d.fechaSalidaCorralon}\n;
   csv += Dias pension,${d.diasPension}\n;
-  csv += "\n";
-  csv += "Concepto,Monto\n";
+  csv += "\nConcepto,Monto\n";
   csv += Banderazo,${d.banderazo}\n;
   csv += Traslado,${d.traslado}\n;
   csv += Maniobra grua principal,${d.maniobra}\n;
@@ -427,11 +417,10 @@ function exportarExcel() {
   csv += Total,${d.total}\n;
 
   if (d.detalleGruas.length) {
-    csv += "\n";
-    csv += "GRUAS ADICIONALES\n";
+    csv += "\nGRUAS ADICIONALES\n";
     csv += "Nombre,Tipo,Placas,KM,Horas espera,Horas maniobra,Aband grua,Horas aband grua,Aband manual,Horas aband manual,Subtotal\n";
     d.detalleGruas.forEach((g) => {
-      csv += ${g.nombre},${g.tipo},${g.placas},${g.km},${g.espera},${g.maniobraHoras},${g.abanderamientoGrua},${g.horasAbanderamientoGrua},${g.abanderamientoManual},${g.horasAbanderamientoManual},${g.subtotal}\n;
+      csv += `${g.nombre},${g.tipo},${g.placas},${g.km},${g.espera},${g.maniobraHoras},${g.abanderamientoGrua},${g.horasAbanderamientoGrua},${g.abanderamientoManual},${g.horasAbanderamientoManual},${g.subtotal}\n`;
     });
   }
 
@@ -439,7 +428,7 @@ function exportarExcel() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = Reporte_Gaceta_${document.getElementById("numeroServicio").value || "servicio"}.csv;
+  a.download = `Reporte_Gaceta_${document.getElementById("numeroServicio").value || "servicio"}.csv`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -447,8 +436,7 @@ function exportarExcel() {
 }
 
 corralonSelect.addEventListener("change", () => {
-  const mostrar = corralonSelect.value === "si";
-  seccionCorralon.classList.toggle("hidden", !mostrar);
+  toggleCorralon();
   calcularTodo();
 });
 
@@ -463,7 +451,6 @@ fechaSalidaCorralon.addEventListener("change", () => {
 });
 
 btnAgregarGrua.addEventListener("click", crearGruaExtra);
-
 document.getElementById("btnCalcular").addEventListener("click", calcularTodo);
 document.getElementById("btnWord").addEventListener("click", exportarWord);
 document.getElementById("btnExcel").addEventListener("click", exportarExcel);
@@ -473,4 +460,5 @@ document.querySelectorAll("input, select").forEach((el) => {
   el.addEventListener("change", calcularTodo);
 });
 
+toggleCorralon();
 calcularTodo();
