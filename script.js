@@ -5,10 +5,17 @@ const tarifas = {
   D: { banderazo: 1337.08, km: 48.83, maniobraHora: 3172.21 }
 };
 
+const PENSION_TARIFAS = {
+  bicicleta_motocicleta: 23.00,
+  automovil_vagoneta: 73.57,
+  camionetas_microbus: 82.76,
+  camion_rabon_torton: 137.94,
+  autobus_remolque_maquinaria: 160.95
+};
+
 const ESPERA_POR_HORA = 909.02;
 const ABANDERAMIENTO_GRUA_POR_HORA = 909.02;
 const ABANDERAMIENTO_MANUAL_POR_HORA = 76.39;
-const PENSION_POR_DIA = 0;
 const CORRALON_COSTO = 0;
 
 const btnAgregarGrua = document.getElementById("btnAgregarGrua");
@@ -22,6 +29,8 @@ const seccionCorralon = document.getElementById("seccionCorralon");
 const fechaIngresoCorralon = document.getElementById("fechaIngresoCorralon");
 const fechaSalidaCorralon = document.getElementById("fechaSalidaCorralon");
 const diasPensionInput = document.getElementById("diasPension");
+const tipoUnidadCorralon = document.getElementById("tipoUnidadCorralon");
+const aplicarIVA = document.getElementById("aplicarIVA");
 
 let contadorGruas = 0;
 
@@ -34,8 +43,18 @@ function money(value) {
 
 function parseDateOnly(value) {
   if (!value) return null;
-  const [y, m, d] = value.split("-").map(Number);
-  return new Date(y, m - 1, d);
+
+  const parts = value.split("-");
+  if (parts.length !== 3) return null;
+
+  const y = Number(parts[0]);
+  const m = Number(parts[1]);
+  const d = Number(parts[2]);
+
+  if (!y || !m || !d) return null;
+
+  const fecha = new Date(y, m - 1, d, 12, 0, 0);
+  return isNaN(fecha.getTime()) ? null : fecha;
 }
 
 function calcularDiasCorralon() {
@@ -49,8 +68,10 @@ function calcularDiasCorralon() {
     return;
   }
 
-  const diff = salida.getTime() - ingreso.getTime();
-  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const msPorDia = 1000 * 60 * 60 * 24;
+  const diferencia = salida.getTime() - ingreso.getTime();
+  const dias = Math.round(diferencia / msPorDia);
+
   diasPensionInput.value = dias >= 0 ? dias : 0;
 }
 
@@ -169,7 +190,9 @@ function obtenerValoresPrincipales() {
     numeroInventario: document.getElementById("numeroInventario")?.value || "",
     fechaIngresoCorralon: document.getElementById("fechaIngresoCorralon")?.value || "",
     fechaSalidaCorralon: document.getElementById("fechaSalidaCorralon")?.value || "",
-    diasPension: Number(document.getElementById("diasPension")?.value) || 0
+    diasPension: Number(document.getElementById("diasPension")?.value) || 0,
+    tipoUnidadCorralon: document.getElementById("tipoUnidadCorralon")?.value || "",
+    aplicarIVA: document.getElementById("aplicarIVA")?.checked || false
   };
 }
 
@@ -217,6 +240,8 @@ function calcularGruasExtras() {
 }
 
 function calcularTodo() {
+  calcularDiasCorralon();
+
   const p = obtenerValoresPrincipales();
 
   const banderazo = tarifas[p.tipo].banderazo;
@@ -234,12 +259,13 @@ function calcularTodo() {
       ? p.horasAbanderamientoManual * ABANDERAMIENTO_MANUAL_POR_HORA
       : 0;
 
-  const pension = p.diasPension * PENSION_POR_DIA;
+  const tarifaPension = PENSION_TARIFAS[p.tipoUnidadCorralon] || 0;
+  const pension = p.corralon === "si" ? p.diasPension * tarifaPension : 0;
   const costoCorralon = p.corralon === "si" ? CORRALON_COSTO : 0;
 
   const { totalGruasExtras, detalleGruas } = calcularGruasExtras();
 
-  const total =
+  const subtotal =
     banderazo +
     traslado +
     maniobra +
@@ -250,16 +276,34 @@ function calcularTodo() {
     pension +
     costoCorralon;
 
-  document.getElementById("rBanderazo").textContent = money(banderazo);
-  document.getElementById("rTraslado").textContent = money(traslado);
-  document.getElementById("rManiobras").textContent = money(maniobra);
-  document.getElementById("rGruasExtras").textContent = money(totalGruasExtras);
-  document.getElementById("rEspera").textContent = money(espera);
-  document.getElementById("rAbanderamientoGrua").textContent = money(costoAbanderamientoGrua);
-  document.getElementById("rAbanderamientoManual").textContent = money(costoAbanderamientoManual);
-  document.getElementById("rPension").textContent = money(pension);
-  document.getElementById("rCorralon").textContent = money(costoCorralon);
-  document.getElementById("rTotal").textContent = money(total);
+  const iva = p.aplicarIVA ? subtotal * 0.16 : 0;
+  const total = subtotal + iva;
+
+  const rBanderazo = document.getElementById("rBanderazo");
+  const rTraslado = document.getElementById("rTraslado");
+  const rManiobras = document.getElementById("rManiobras");
+  const rGruasExtras = document.getElementById("rGruasExtras");
+  const rEspera = document.getElementById("rEspera");
+  const rAbanderamientoGrua = document.getElementById("rAbanderamientoGrua");
+  const rAbanderamientoManual = document.getElementById("rAbanderamientoManual");
+  const rPension = document.getElementById("rPension");
+  const rCorralon = document.getElementById("rCorralon");
+  const rSubtotal = document.getElementById("rSubtotal");
+  const rIVA = document.getElementById("rIVA");
+  const rTotal = document.getElementById("rTotal");
+
+  if (rBanderazo) rBanderazo.textContent = money(banderazo);
+  if (rTraslado) rTraslado.textContent = money(traslado);
+  if (rManiobras) rManiobras.textContent = money(maniobra);
+  if (rGruasExtras) rGruasExtras.textContent = money(totalGruasExtras);
+  if (rEspera) rEspera.textContent = money(espera);
+  if (rAbanderamientoGrua) rAbanderamientoGrua.textContent = money(costoAbanderamientoGrua);
+  if (rAbanderamientoManual) rAbanderamientoManual.textContent = money(costoAbanderamientoManual);
+  if (rPension) rPension.textContent = money(pension);
+  if (rCorralon) rCorralon.textContent = money(costoCorralon);
+  if (rSubtotal) rSubtotal.textContent = money(subtotal);
+  if (rIVA) rIVA.textContent = money(iva);
+  if (rTotal) rTotal.textContent = money(total);
 
   return {
     ...p,
@@ -273,7 +317,10 @@ function calcularTodo() {
     costoAbanderamientoManual,
     pension,
     costoCorralon,
-    total
+    subtotal,
+    iva,
+    total,
+    tarifaPension
   };
 }
 
@@ -335,7 +382,7 @@ function construirHtmlReporte() {
           <tr><th>Aplica</th><td>${d.corralon}</td><th>Placas corralón</th><td>${d.placasCorralon}</td></tr>
           <tr><th>No. acta</th><td>${d.numeroActa}</td><th>No. inventario</th><td>${d.numeroInventario}</td></tr>
           <tr><th>Fecha ingreso</th><td>${d.fechaIngresoCorralon}</td><th>Fecha salida</th><td>${d.fechaSalidaCorralon}</td></tr>
-          <tr><th>Días pensión</th><td>${d.diasPension}</td><th></th><td></td></tr>
+          <tr><th>Tipo unidad</th><td>${d.tipoUnidadCorralon}</td><th>Días pensión</th><td>${d.diasPension}</td></tr>
         </table>
       </div>
 
@@ -367,6 +414,8 @@ function construirHtmlReporte() {
           <tr><th>Abanderamiento manual</th><td>${money(d.costoAbanderamientoManual)}</td></tr>
           <tr><th>Pensión</th><td>${money(d.pension)}</td></tr>
           <tr><th>Corralón</th><td>${money(d.costoCorralon)}</td></tr>
+          <tr><th>Subtotal</th><td>${money(d.subtotal)}</td></tr>
+          <tr><th>IVA 16%</th><td>${money(d.iva)}</td></tr>
           <tr class="total"><th>Total</th><td>${money(d.total)}</td></tr>
         </table>
       </div>
@@ -397,8 +446,8 @@ function exportarExcel() {
   csv += `Fecha,${d.fecha}\n`;
   csv += `Hora,${d.hora}\n`;
   csv += `Tipo de servicio,${d.tipoServicio}\n`;
-  csv += `Tipo de grua principal,${d.tipo}\n`;
-  csv += `Placas del auto,${d.placas}\n`;
+  csv += `Tipo de grua principal,${d.tipo}\n;
+  csv += Placas del auto,${d.placas}\n`;
   csv += `Marca,${d.marca}\n`;
   csv += `Origen,${d.origen}\n`;
   csv += `Destino,${d.destino}\n`;
@@ -411,6 +460,7 @@ function exportarExcel() {
   csv += `Numero inventario,${d.numeroInventario}\n`;
   csv += `Fecha ingreso corralon,${d.fechaIngresoCorralon}\n`;
   csv += `Fecha salida corralon,${d.fechaSalidaCorralon}\n`;
+  csv += `Tipo unidad corralon,${d.tipoUnidadCorralon}\n`;
   csv += `Dias pension,${d.diasPension}\n`;
   csv += "\nConcepto,Monto\n";
   csv += `Banderazo,${d.banderazo}\n`;
@@ -422,6 +472,8 @@ function exportarExcel() {
   csv += `Abanderamiento manual,${d.costoAbanderamientoManual}\n`;
   csv += `Pension,${d.pension}\n`;
   csv += `Corralon,${d.costoCorralon}\n`;
+  csv += `Subtotal,${d.subtotal}\n`;
+  csv += `IVA 16%,${d.iva}\n`;
   csv += `Total,${d.total}\n`;
 
   if (d.detalleGruas.length) {
@@ -446,6 +498,7 @@ function exportarExcel() {
 if (corralonSelect) {
   corralonSelect.addEventListener("change", () => {
     toggleCorralon();
+    calcularDiasCorralon();
     calcularTodo();
   });
 }
@@ -462,6 +515,14 @@ if (fechaSalidaCorralon) {
     calcularDiasCorralon();
     calcularTodo();
   });
+}
+
+if (tipoUnidadCorralon) {
+  tipoUnidadCorralon.addEventListener("change", calcularTodo);
+}
+
+if (aplicarIVA) {
+  aplicarIVA.addEventListener("change", calcularTodo);
 }
 
 if (btnAgregarGrua) {
@@ -486,4 +547,7 @@ document.querySelectorAll("input, select").forEach((el) => {
 });
 
 toggleCorralon();
-calcularTodo();
+setTimeout(() => {
+  calcularDiasCorralon();
+  calcularTodo();
+}, 200);
