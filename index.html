@@ -155,6 +155,18 @@
             </div>
 
             <div class="field">
+              <label>Tipo de unidad</label>
+              <select id="tipoUnidadCorralon">
+                <option value="">Selecciona</option>
+                <option value="bicicleta_motocicleta">Bicicleta y motocicleta</option>
+                <option value="automovil_vagoneta">Automóvil o vagoneta</option>
+                <option value="camionetas_microbus">Camionetas y microbús</option>
+                <option value="camion_rabon_torton">Camión tipo rabón, torton, tractor agrícola</option>
+                <option value="autobus_remolque_maquinaria">Autobús, remolque, semirremolque, tractocamión y maquinaria especial</option>
+              </select>
+            </div>
+
+            <div class="field">
               <label>Días de pensión (automático)</label>
               <input type="number" id="diasPension" placeholder="0" readonly />
             </div>
@@ -166,7 +178,15 @@
             <h3>Grúas adicionales</h3>
             <button type="button" id="btnAgregarGrua" class="mini-btn">+ Agregar grúa</button>
           </div>
+
           <div id="gruasExtrasContainer"></div>
+        </div>
+
+        <div class="extra-box iva-box">
+          <label class="iva-label">
+            <input type="checkbox" id="aplicarIVA" />
+            Aplicar IVA 16%
+          </label>
         </div>
 
         <div class="actions action-grid">
@@ -223,6 +243,16 @@
           <div class="result-item">
             <span>Corralón</span>
             <strong id="rCorralon">$0.00</strong>
+          </div>
+
+          <div class="result-item">
+            <span>Subtotal</span>
+            <strong id="rSubtotal">$0.00</strong>
+          </div>
+
+          <div class="result-item">
+            <span>IVA 16%</span>
+            <strong id="rIVA">$0.00</strong>
           </div>
 
           <div class="result-item total">
