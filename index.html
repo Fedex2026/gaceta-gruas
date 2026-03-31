@@ -3,9 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Gaceta Grúas Metropolitanas</title>
+
+  <!-- Logo navegador -->
   <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- Logo celular -->
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="shortcut icon" href="logo.png">
+
+  <!-- Web App -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e3a8a">
+
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="app">
     <header class="topbar">
@@ -124,25 +138,13 @@
               <option value="si">Sí</option>
             </select>
           </div>
+
         </div>
 
         <div id="seccionCorralon" class="extra-box hidden">
           <h3>Datos de corralón</h3>
+
           <div class="grid">
-            <div class="field">
-              <label>Placas corralón</label>
-              <input type="text" id="placasCorralon" placeholder="Placas del auto" />
-            </div>
-
-            <div class="field">
-              <label>Número de acta</label>
-              <input type="text" id="numeroActa" placeholder="Ej. ACTA-001" />
-            </div>
-
-            <div class="field">
-              <label>Número de inventario</label>
-              <input type="text" id="numeroInventario" placeholder="Ej. INV-001" />
-            </div>
 
             <div class="field">
               <label>Fecha de ingreso</label>
@@ -161,39 +163,32 @@
                 <option value="bicicleta_motocicleta">Bicicleta y motocicleta</option>
                 <option value="automovil_vagoneta">Automóvil o vagoneta</option>
                 <option value="camionetas_microbus">Camionetas y microbús</option>
-                <option value="camion_rabon_torton">Camión tipo rabón, torton, tractor agrícola</option>
-                <option value="autobus_remolque_maquinaria">Autobús, remolque, semirremolque, tractocamión y maquinaria especial</option>
+                <option value="camion_rabon_torton">Camión rabón o torton</option>
+                <option value="autobus_remolque_maquinaria">Autobús o maquinaria</option>
               </select>
             </div>
 
             <div class="field">
-              <label>Días de pensión (automático)</label>
-              <input type="number" id="diasPension" placeholder="0" readonly />
+              <label>Días de pensión</label>
+              <input type="number" id="diasPension" readonly />
             </div>
-          </div>
-        </div>
 
-        <div class="extra-box">
-          <div class="section-title-row">
-            <h3>Grúas adicionales</h3>
-            <button type="button" id="btnAgregarGrua" class="mini-btn">+ Agregar grúa</button>
           </div>
-
-          <div id="gruasExtrasContainer"></div>
         </div>
 
         <div class="extra-box iva-box">
-          <label class="iva-label">
-            <input type="checkbox" id="aplicarIVA" />
+          <label>
+            <input type="checkbox" id="aplicarIVA">
             Aplicar IVA 16%
           </label>
         </div>
 
-        <div class="actions action-grid">
-          <button id="btnCalcular" type="button">Calcular</button>
-          <button id="btnWord" type="button">Exportar Word</button>
-          <button id="btnExcel" type="button">Exportar Excel</button>
+        <div class="actions">
+          <button id="btnCalcular">Calcular</button>
+          <button id="btnWord">Exportar Word</button>
+          <button id="btnExcel">Exportar Excel</button>
         </div>
+
       </section>
 
       <section class="card result-card">
@@ -201,69 +196,17 @@
 
         <div class="result-list">
           <div class="result-item">
-            <span>Banderazo</span>
-            <strong id="rBanderazo">$0.00</strong>
-          </div>
-
-          <div class="result-item">
-            <span>Traslado</span>
-            <strong id="rTraslado">$0.00</strong>
-          </div>
-
-          <div class="result-item">
-            <span>Maniobra grúa principal</span>
-            <strong id="rManiobras">$0.00</strong>
-          </div>
-
-          <div class="result-item">
-            <span>Grúas adicionales</span>
-            <strong id="rGruasExtras">$0.00</strong>
-          </div>
-
-          <div class="result-item">
-            <span>Espera</span>
-            <strong id="rEspera">$0.00</strong>
-          </div>
-
-          <div class="result-item">
-            <span>Abanderamiento grúa</span>
-            <strong id="rAbanderamientoGrua">$0.00</strong>
-          </div>
-
-          <div class="result-item">
-            <span>Abanderamiento manual</span>
-            <strong id="rAbanderamientoManual">$0.00</strong>
-          </div>
-
-          <div class="result-item">
-            <span>Pensión</span>
-            <strong id="rPension">$0.00</strong>
-          </div>
-
-          <div class="result-item">
-            <span>Corralón</span>
-            <strong id="rCorralon">$0.00</strong>
-          </div>
-
-          <div class="result-item">
-            <span>Subtotal</span>
-            <strong id="rSubtotal">$0.00</strong>
-          </div>
-
-          <div class="result-item">
-            <span>IVA 16%</span>
-            <strong id="rIVA">$0.00</strong>
-          </div>
-
-          <div class="result-item total">
             <span>Total</span>
             <strong id="rTotal">$0.00</strong>
           </div>
         </div>
+
       </section>
+
     </main>
   </div>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
