@@ -6,14 +6,10 @@
 
   <title>Gaceta Grúas Metropolitanas</title>
 
-  <!-- Logo navegador -->
   <link rel="icon" type="image/png" href="logo.png">
-
-  <!-- Logo celular -->
   <link rel="apple-touch-icon" href="logo.png">
   <link rel="shortcut icon" href="logo.png">
 
-  <!-- Web App -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1e3a8a">
 
@@ -138,13 +134,26 @@
               <option value="si">Sí</option>
             </select>
           </div>
-
         </div>
 
         <div id="seccionCorralon" class="extra-box hidden">
           <h3>Datos de corralón</h3>
 
           <div class="grid">
+            <div class="field">
+              <label>Placas corralón</label>
+              <input type="text" id="placasCorralon" placeholder="Placas en corralón" />
+            </div>
+
+            <div class="field">
+              <label>Número de acta</label>
+              <input type="text" id="numeroActa" placeholder="Número de acta" />
+            </div>
+
+            <div class="field">
+              <label>Número de inventario</label>
+              <input type="text" id="numeroInventario" placeholder="Número de inventario" />
+            </div>
 
             <div class="field">
               <label>Fecha de ingreso</label>
@@ -172,8 +181,14 @@
               <label>Días de pensión</label>
               <input type="number" id="diasPension" readonly />
             </div>
-
           </div>
+        </div>
+
+        <div class="extra-box">
+          <div class="actions">
+            <button type="button" id="btnAgregarGrua">Agregar grúa</button>
+          </div>
+          <div id="gruasExtrasContainer"></div>
         </div>
 
         <div class="extra-box iva-box">
@@ -184,11 +199,10 @@
         </div>
 
         <div class="actions">
-          <button id="btnCalcular">Calcular</button>
-          <button id="btnWord">Exportar Word</button>
-          <button id="btnExcel">Exportar Excel</button>
+          <button id="btnCalcular" type="button">Calcular</button>
+          <button id="btnWord" type="button">Exportar Word</button>
+          <button id="btnExcel" type="button">Exportar Excel</button>
         </div>
-
       </section>
 
       <section class="card result-card">
@@ -196,17 +210,69 @@
 
         <div class="result-list">
           <div class="result-item">
+            <span>Banderazo</span>
+            <strong id="rBanderazo">$0.00</strong>
+          </div>
+
+          <div class="result-item">
+            <span>Traslado</span>
+            <strong id="rTraslado">$0.00</strong>
+          </div>
+
+          <div class="result-item">
+            <span>Maniobra grúa principal</span>
+            <strong id="rManiobras">$0.00</strong>
+          </div>
+
+          <div class="result-item">
+            <span>Grúas adicionales</span>
+            <strong id="rGruasExtras">$0.00</strong>
+          </div>
+
+          <div class="result-item">
+            <span>Espera</span>
+            <strong id="rEspera">$0.00</strong>
+          </div>
+
+          <div class="result-item">
+            <span>Abanderamiento grúa</span>
+            <strong id="rAbanderamientoGrua">$0.00</strong>
+          </div>
+
+          <div class="result-item">
+            <span>Abanderamiento manual</span>
+            <strong id="rAbanderamientoManual">$0.00</strong>
+          </div>
+
+          <div class="result-item">
+            <span>Pensión</span>
+            <strong id="rPension">$0.00</strong>
+          </div>
+
+          <div class="result-item">
+            <span>Corralón</span>
+            <strong id="rCorralon">$0.00</strong>
+          </div>
+
+          <div class="result-item">
+            <span>Subtotal</span>
+            <strong id="rSubtotal">$0.00</strong>
+          </div>
+
+          <div class="result-item">
+            <span>IVA</span>
+            <strong id="rIVA">$0.00</strong>
+          </div>
+
+          <div class="result-item">
             <span>Total</span>
             <strong id="rTotal">$0.00</strong>
           </div>
         </div>
-
       </section>
-
     </main>
   </div>
 
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
 </html>
