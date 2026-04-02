@@ -89,7 +89,7 @@ function crearGruaExtra() {
 
   wrapper.innerHTML = `
     <div class="grua-extra-header">
-      <strong>Grúa adicional ${contadorGruas}</strong>
+      <strong>${contadorGruas + 1}ª grúa</strong>
       <button type="button" class="btn-eliminar">Eliminar</button>
     </div>
 
@@ -155,6 +155,7 @@ function crearGruaExtra() {
   const btnEliminar = wrapper.querySelector(".btn-eliminar");
   btnEliminar.addEventListener("click", () => {
     wrapper.remove();
+    recalcularTitulosGruas();
     calcularTodo();
   });
 
@@ -164,6 +165,15 @@ function crearGruaExtra() {
   });
 
   gruasExtrasContainer.appendChild(wrapper);
+  recalcularTitulosGruas();
+}
+
+function recalcularTitulosGruas() {
+  const bloques = document.querySelectorAll(".grua-extra");
+  bloques.forEach((bloque, index) => {
+    const titulo = bloque.querySelector(".grua-extra-header strong");
+    if (titulo) titulo.textContent = `${index + 2}ª grúa`;
+  });
 }
 
 function obtenerValoresPrincipales() {
@@ -222,7 +232,7 @@ function calcularGruasExtras() {
     totalGruasExtras += subtotal;
 
     detalleGruas.push({
-      nombre: `Grúa adicional ${index + 1}`,
+      nombre: `${index + 2}ª grúa`,
       tipo,
       placas,
       km,
@@ -446,8 +456,8 @@ function exportarExcel() {
   csv += `Fecha,${d.fecha}\n`;
   csv += `Hora,${d.hora}\n`;
   csv += `Tipo de servicio,${d.tipoServicio}\n`;
-  csv += `Tipo de grua principal,${d.tipo}\n;
-  csv += Placas del auto,${d.placas}\n`;
+  csv += `Tipo de grua principal,${d.tipo}\n`;
+  csv += `Placas del auto,${d.placas}\n`;
   csv += `Marca,${d.marca}\n`;
   csv += `Origen,${d.origen}\n`;
   csv += `Destino,${d.destino}\n`;
@@ -457,8 +467,8 @@ function exportarExcel() {
   csv += `Corralon,${d.corralon}\n`;
   csv += `Placas corralon,${d.placasCorralon}\n`;
   csv += `Numero acta,${d.numeroActa}\n`;
-  csv += `Numero inventario,${d.numeroInventario}\n`;
-  csv += `Fecha ingreso corralon,${d.fechaIngresoCorralon}\n`;
+  csv += `Numero inventario,${d.numeroInventario}\n;
+  csv += Fecha ingreso corralon,${d.fechaIngresoCorralon}\n`;
   csv += `Fecha salida corralon,${d.fechaSalidaCorralon}\n`;
   csv += `Tipo unidad corralon,${d.tipoUnidadCorralon}\n`;
   csv += `Dias pension,${d.diasPension}\n`;
